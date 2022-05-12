@@ -11,7 +11,7 @@ Python
 2022-01-10
 
 ## Author
-openQCM Team - Marco (mainly)
+openQCM Team - Marco
 
 INSA Team - Luca PACCARD, Arthur LEMAIRE
 
