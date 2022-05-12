@@ -81,7 +81,7 @@ To link the GUI to custom functionalities, the file extension has to be change.
         `cp mainWindow_new_ui.py ../ui/`  
     This will copy the new file with the `.py` extension in the `..\openQCM\ui` directory.
 
-### Adding new functionnalities
+### Adding new functionalities
 The file that has to be edited in order to add new functionnalities is the following:
     `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
 * The link between the GUI created on Qt Designer and `mainWindow.py` is made with the function `_configure_signals(self)`.
