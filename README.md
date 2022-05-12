@@ -87,7 +87,7 @@ The file that has to be edited in order to add new functionnalities is the follo
 * The link between the GUI created on Qt Designer and `mainWindow.py` is made with the function `_configure_signals(self)`.
 * To add a function linked to a graphical element on the GUI such as a button follow this example:
      * On Qt Designer, each element is given a name in the 'objectName' box in the 'Property Editor' panel. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
-     * We will then associate a function to this button when it is clicked in `_configure_signals(self)`:
+     * We will then associate a function to this button  in `_configure_signals(self)` when it is clicked:
      `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`  
      * Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
 * You can now edit your function. It will be launched when the button is clicked.
