@@ -105,12 +105,12 @@ Si tu veux ajouter du code c'est comme ça
   ```
 
 ## Usage
-Start the application from Anaconda3 prompt
-1.  Launch Anaconda3 prompt 
-2.  Browse to the openQCM Python software main directory 
-    ...\openQCM_Next_py_0.1.2_source\OPENQCM
-3.  launch the python application main GUI by typing the command
-    python app.py
+Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
+1.  Launch Anaconda3 prompt or terminal
+2.  Browse to the openQCM Python software main directory:
+          `...\openQCM_Next_py_0.1.2_source\OPENQCM`
+3.  launch the python application main GUI by typing the command:
+          `python app.py`
         
 
 
