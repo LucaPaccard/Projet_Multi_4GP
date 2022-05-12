@@ -1,5 +1,7 @@
 # Projet_Multi_4GP
-Graphic User Interface developed for quantum dots directed assembly. It combines a quartz crystal microbalance, an injection system and a camera module. 
+This documentation presents the Graphic User Interface (GUI) developed during the 4th year multidisciplinary project at the Physics Department of INSA Toulouse.  
+Its aim is to study quantum dots directed assembly. It combines a quartz crystal microbalance, an injection system and a camera module.  
+The collaborating laboratory of this project is the Laboratory of Physics and Chemistry of Nano-Objects (LPCNO).
 
 ## Name
 openQCM Next GUI Software — Injection and Camera Implementations
@@ -63,13 +65,13 @@ Linux
   4.  Logout and Login
 
 ### Qt Designer 
-Qt Designer is a tool used to easily create graphical interfaces. To apply changes to the GUI, download and install it https://build-system.fman.io/qt-designer-download
+Qt Designer is a tool used to easily create graphical interfaces. To apply changes to the GUI, download and install it at : https://build-system.fman.io/qt-designer-download
     
 The Qt Designer file for the software can be found here:  
     `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\mainWindow_new.ui`
 The file is saved under `.ui` extension.
 
-### Link between Qt Designer interface and functionnalities
+### Link between Qt Designer interface and software functionnalities
 To link the GUI to custom functionalities, the file extension has to be change. 
   1. Open Anaconda3 terminal (Windows) or terminal (macOS) and go to the following directory:
         `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\`
@@ -81,15 +83,16 @@ To link the GUI to custom functionalities, the file extension has to be change.
 
 ### Adding new functionnalities
 The file that has to be edited in order to add new functionnalities is the following:
-    `..\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
-* The link between the GUI created on Qt Designer and `mainWindow.py` is made in the function `_configure_signals(self)`.
+    `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
+* The link between the GUI created on Qt Designer and `mainWindow.py` is made with the function `_configure_signals(self)`.
 * To add a function linked to a graphical element on the GUI such as a button follow this example:
      * On Qt Designer, each element is given a name in the 'objectName' box in the 'Property Editor' panel. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
-     * We will then associate a function to this button when it is clicked:
+     * We will then associate a function to this button when it is clicked in `_configure_signals(self)`:
      `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`  
      * Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
 * You can now edit your function. It will be launched when the button is clicked.
        
+## INSA implemented functions
 Si tu veux ajouter du code c'est comme ça
 ```python
   def updateViews1():
@@ -111,6 +114,8 @@ Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
 ## Links
 - [website] https://openqcm.com/
 - [github]  https://github.com/openQCM 
+
+- [website] http://lpcno.insa-toulouse.fr/
 
 ## Contact
 openQCM
