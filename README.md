@@ -72,32 +72,37 @@ Windows, macOS
 Open Anaconda3 prompt (Windows) or terminal (macOS) and type :
     conda install designer
 The Qt Designer file for the software can be found here:
-    ...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\mainWindow_new.ui
-The file is saved under '.ui' extension.
+    `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\mainWindow_new.ui`
+The file is saved under `.ui` extension.
 
 ### Link between Qt Designer interface and functionnalities
 To link the GUI to custom functionalities, the file extension has to be change. 
   1. Open Anaconda3 terminal (Windows) or terminal (macOS) and go to the following directory:
-        ...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\
+        `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\`
   2. Type the command:
         `pyuic5 mainWindow_new.ui -o mainWindow_new_ui.py`
   3. In the same directory, type the command:
-        cp mainWindow_new_ui.py ../ui/
-    This will copy the new file with the '.py' extension in the '..\openQCM\ui' directory.
+        `cp mainWindow_new_ui.py ../ui/`
+    This will copy the new file with the `.py` extension in the `..\openQCM\ui` directory.
 
 ### Adding new functionnalities
 The file that has to be edited in order to add new functionnalities is the following:
-    ..\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py
-   1. The link between the GUI created on Qt Designer and 'mainWindow.py' is made in the function '_configure_signals(self)'.
+    `..\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
+   1. The link between the GUI created on Qt Designer and 'mainWindow.py' is made in the function `_configure_signals(self)`.
    2. To add a function linked to a graphical element on the GUI such as a button follow this example:
-      1. On Qt Designer, each element is given a name on 'Property Editor' in the 'objectName' box. For the button used to start the injection of fluid, this button is called 'pButton_Start_Injection'.
+      1. On Qt Designer, each element is given a name on 'Property Editor' in the 'objectName' box. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
       2. We will then associate a function to this button when it is clicked:
-        ```python
-        self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)
-        ```
+        `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`
         Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
       3. You can now edit your function. It will be launched when the button is clicked.
        
+Si tu veux ajouter du code c'est comme ça
+```python
+  def updateViews1():
+  	self._plt0.clear()
+  	if self._get_source() != SourceType.multiscan:
+  		self._plt1.clear()
+  ```
 
 ## Usage
 Start the application from Anaconda3 prompt
