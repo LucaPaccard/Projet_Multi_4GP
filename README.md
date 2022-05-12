@@ -11,8 +11,7 @@ Python
 2022-01-10
 
 ## Author
-openQCM Team - Marco
-
+openQCM Team - Marco  
 INSA Team - Luca PACCARD, Arthur LEMAIRE
 
 ## Description
@@ -32,9 +31,6 @@ The application is based mainly on multiprocessing package (https://docs.python.
 ## Intended Audience
 Science/Research/Engineering
 
-## Software Development
-User Interfaces
-
 ## Requirements
 Requirements:
 - Python 3.7 (verified compatibility with Python 3.6) (https://www.python.org/).
@@ -50,7 +46,7 @@ Other internal packages used:
 ## Installation instructions/guide:
 ### Source code
 Download source code here:
-https://github/lucapaccard/application.zip
+https://github.com/LucaPaccard/Projet_Multi_4GP
 
 Windows, macOS
   1.  Download and install Anaconda3 for Python 3.7 version Anaconda3-5.3.0  https://www.anaconda.com/download/
@@ -67,11 +63,9 @@ Linux
   4.  Logout and Login
 
 ### Qt Designer 
-Qt Designer is a tool used to easily create graphical interfaces. To apply changes to the GUI, it has to be installed:
-Windows, macOS
-Open Anaconda3 prompt (Windows) or terminal (macOS) and type :
-    conda install designer
-The Qt Designer file for the software can be found here:
+Qt Designer is a tool used to easily create graphical interfaces. To apply changes to the GUI, download and install it https://build-system.fman.io/qt-designer-download
+    
+The Qt Designer file for the software can be found here:  
     `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\res\mainWindow_new.ui`
 The file is saved under `.ui` extension.
 
@@ -82,19 +76,19 @@ To link the GUI to custom functionalities, the file extension has to be change.
   2. Type the command:
         `pyuic5 mainWindow_new.ui -o mainWindow_new_ui.py`
   3. In the same directory, type the command:
-        `cp mainWindow_new_ui.py ../ui/`
+        `cp mainWindow_new_ui.py ../ui/`  
     This will copy the new file with the `.py` extension in the `..\openQCM\ui` directory.
 
 ### Adding new functionnalities
 The file that has to be edited in order to add new functionnalities is the following:
     `..\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
-   1. The link between the GUI created on Qt Designer and 'mainWindow.py' is made in the function `_configure_signals(self)`.
-   2. To add a function linked to a graphical element on the GUI such as a button follow this example:
-      1. On Qt Designer, each element is given a name on 'Property Editor' in the 'objectName' box. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
-      2. We will then associate a function to this button when it is clicked:
-        `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`
-        Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
-      3. You can now edit your function. It will be launched when the button is clicked.
+* The link between the GUI created on Qt Designer and `mainWindow.py` is made in the function `_configure_signals(self)`.
+* To add a function linked to a graphical element on the GUI such as a button follow this example:
+     * On Qt Designer, each element is given a name in the 'objectName' box in the 'Property Editor' panel. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
+     * We will then associate a function to this button when it is clicked:
+     `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`  
+     * Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
+* You can now edit your function. It will be launched when the button is clicked.
        
 Si tu veux ajouter du code c'est comme ça
 ```python
