@@ -100,7 +100,8 @@ The following functions enable to turn the camera on, and to start to display th
 
 This function turn the camera on. 
 
-```def start_camera(self):
+```
+def start_camera(self):
         # TODO : Fix error when fist port chosen isn't available
         camera_port = int(self.ui.cBox_Camera_Port.currentText())
         if self.capture is None:
@@ -112,7 +113,8 @@ This function turn the camera on.
 
 This function displays then the video on the GUI directly. 
 
-```def displayImage(self, img, window=True):
+```
+def displayImage(self, img, window=True):
 
         """
         # resize image
@@ -139,31 +141,36 @@ This function displays then the video on the GUI directly.
 
 And finally this function updates the frame of the camera in the GUI. 
 
-```def update_frame(self):
+```
+def update_frame(self):
         ret, image = self.capture.read()
         self.displayImage(image, True)
   ```
 
 The following functions are designed to save on the computer pictures from the camera. The first one enables to take a single picture, while the second one takes several pictures according to the capture parameters selected. The third one is made to record pictures during . 
 
-```def screenshot(self):
+```
+def screenshot(self):
         flag, frame = self.capture.read()
         path = 'screenshots'
         if flag:
             name = "Screenshot_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
             cv2.imwrite(os.path.join(path, name), frame)
-  ```
+            
+```
   
-  ``` def capture_image(self):
+```
+  def capture_image(self):
         capture_rate = self.ui.spinBox_Capture_Rate.value()
         capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
         dt = 1/capture_rate
 
         dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
         os.makedirs('recorded_images/{}'.format(dirname))
-  ```
+```
   
-    ``` def record_image():
+``` 
+    def record_image():
             flag, frame = self.capture.read()
 
             path = 'recorded_images/{}'.format(dirname)
@@ -176,17 +183,151 @@ The following functions are designed to save on the computer pictures from the c
         thread1.start()
         T.sleep(capture_time)
         thread1.cancel()
-  ```
+```
 
 Functions related to the usage of the Fluigent equipment 
 
+This function allow the program to get the status of the instrument, to know if they are connected and ready to be used, it initialises the connection. 
 
-```python
-  def updateViews1():
-  	self._plt0.clear()
-  	if self._get_source() != SourceType.multiscan:
-  		self._plt1.clear()
-  ```
+```
+def InstrumentsInfo(self):
+        print('')
+        print('INSTRUMENTS INFORMATIONS:')
+        # Detect all controllers
+        SNs, types = fgt_detect()
+        controllerCount = len(SNs)
+        print('Number of controllers detected: {}'.format(controllerCount))
+
+        # List all found controllers' serial number and type
+        for i, sn in enumerate(SNs):
+            print('Detected instrument at index: {}, ControllerSN: {}, type: {}' \
+                  .format(i, sn, str(types[i])))
+
+        print('')
+
+        ## Initialize specific instruments
+        # Initialize only specific instrument controllers here If you do not want
+        # a controller in the list or if you want a specific order (e.g. LineUP
+        # before MFCS instruments), rearrange parsed SN table
+        fgt_init(SNs)
+
+        ## Get the number of channels of each type
+
+        # Get total number of initialized pressure channels
+        print('Total number of pressure channels: {}'.format(fgt_get_pressureChannelCount()))
+
+        # Get total number of initialized pressure channels
+        print('Total number of sensor channels: {}'.format(fgt_get_sensorChannelCount()))
+
+        # Get total number of initialized TTL channels
+        print('Total number of TTL channels: {}'.format(fgt_get_TtlChannelCount()))
+
+        # Get total number of initialized valve channels
+        print('Total number of valve channels: {}'.format(fgt_get_valveChannelCount()))
+
+        print('')
+
+        ## Get detailed information about all controllers
+
+        controllerInfoArray = fgt_get_controllersInfo()
+        for i, controllerInfo in enumerate(controllerInfoArray):
+            print('Controller info at index: {}'.format(i))
+            print(controllerInfo)
+            print('')
+
+        ## Get detailed information about all pressure channels
+
+        pressureInfoArray = fgt_get_pressureChannelsInfo()
+        for i, pressureInfo in enumerate(pressureInfoArray):
+            print('Pressure channel info at index: {}'.format(i))
+            print(pressureInfo)
+            print('')
+
+        ## Get detailed information about all sensor channels
+
+        sensorInfoArray, sensorTypeArray = fgt_get_sensorChannelsInfo()
+        for i, sensorInfo in enumerate(sensorInfoArray):
+            print('Sensor channel info at index: {}'.format(i))
+            print(sensorInfo)
+            print("Sensor type: {}".format(sensorTypeArray[i]))
+            print('')
+
+        ## Get detailed information about all TTL channels
+
+        ttlInfoArray = fgt_get_TtlChannelsInfo()
+        for i, ttlInfo in enumerate(ttlInfoArray):
+            print('TTL channel info at index: {}'.format(i))
+            print(ttlInfo)
+            print('')
+
+        valveInfoArray, valveTypeArray = fgt_get_valveChannelsInfo()
+        for i, valveInfo in enumerate(valveInfoArray):
+            print('Valve channel info at index: {}'.format(i))
+            print(valveInfo)
+            print("Valve type: {}".format(valveTypeArray[i]))
+            print('')
+
+        ## Close the session
+        fgt_close()
+```
+
+This function initialises the injection and the pressure. 
+
+```
+ def Injection(self):
+        global injection_time
+        y = True
+        t_end = time.time() + injection_time/1000
+        while time.time() < t_end:
+            if Stop_Injection_Bool and y:
+                fgt_set_pressure(0, 0)
+                y = False
+        fgt_set_pressure(0, 0)
+```
+
+The following functions are designed to start and stop the injection process, by setting the pressure either to the desired value during the desired time, or by setting it to 0. The start function initialises the injection. 
+
+```
+def Start_Injection(self):
+        pressure = self.ui.spinBox_Pressure.value()
+        global injection_time
+        injection_time = self.ui.spinBox_Injection_Time.value()
+
+        ## Initialize the session
+        # This step is optional, if not called session will be automatically created
+        fgt_init()
+
+        # Set pressure to the given pressure on first pressure channel of the list
+        # mbar is the default unit at initialization
+        fgt_set_pressure(0, pressure)
+
+        y = True
+        t_end = time.time() + injection_time/1000
+        while time.time() < t_end:
+            if Stop_Injection_Bool and y:
+                fgt_set_pressure(0, 0)
+                y = False
+        fgt_set_pressure(0, 0)
+        #Injection()
+        # Wait injection_time (in seconds) before setting pressure to 0
+        #time.sleep(injection_time / 1000)
+```
+
+```
+def Stop_Injection(self):
+        global Stop_Injection_Bool
+        Stop_Injection_Bool = True
+        fgt_set_pressure(0,0)
+```
+Finally, this function allows one to reset the pressure value. 
+
+```
+def Pressure_Reset(self):
+        fgt_set_pressure(0,0)
+        fgt_close()
+```
+
+
 
 ## Usage
 Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
