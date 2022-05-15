@@ -327,7 +327,69 @@ def Pressure_Reset(self):
         fgt_close()
 ```
 
+The GUI allows the operator to automate the recording of pictures during the injection process, using the functions below. 
 
+The following function sets the recording parameters according to the ones chosen by the operator.
+
+```
+def Injection_Capture(self):
+        capture_rate = self.ui.spinBox_Capture_Rate.value()
+        injection_time = self.ui.spinBox_Injection_Time.value() / 1000                  # injection time
+        time_before_injection = self.ui.spinBox_Time_Before_Injection.value() / 1000    # image capture time before injection
+        time_after_injection = self.ui.spinBox_Time_After_Injection.value() / 1000      # image capture time after injection
+
+        dt = 1 / capture_rate
+
+        dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))  # creates new directory for every recording
+        os.makedirs('recorded_images/{}'.format(dirname))
+```
+
+
+
+```
+def record_image():
+            #print("recording")
+
+            flag, frame = self.capture.read()
+
+            path = 'recorded_images/{}'.format(
+                dirname)
+            if flag:
+                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+                cv2.imwrite(os.path.join(path, name), frame)
+```
+
+This function start the injection and the recording process'.
+
+```
+        def injection():
+            #print("Hello world!")
+
+
+            pressure = self.ui.spinBox_Pressure.value()
+            fgt_init()
+            fgt_set_pressure(0, pressure)
+
+
+        thread1 = perpetualTimer(dt, record_image)
+        #thread2 = perpetualTimer(injection_time, injection)
+
+        print("go capture")
+        thread1.start()
+        T.sleep(time_before_injection)
+        print("go injection")
+        #thread2.start()
+        injection()
+
+        T.sleep(injection_time)
+        #thread2.cancel()
+        fgt_set_pressure(0, 0)
+        print("fini injection")
+
+        T.sleep(time_after_injection)
+        thread1.cancel()
+        print("fini capture")
+```
 
 ## Usage
 Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
