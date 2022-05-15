@@ -93,7 +93,94 @@ The file that has to be edited in order to add new functionnalities is the follo
 * You can now edit your function. It will be launched when the button is clicked.
        
 ## INSA implemented functions
-Si tu veux ajouter du code c'est comme ça
+
+Functions related to the usage of the camera :
+
+The following functions enable to turn the camera on, and to start to display the video on the GUI. 
+
+This function turn the camera on. 
+
+```def start_camera(self):
+        # TODO : Fix error when fist port chosen isn't available
+        camera_port = int(self.ui.cBox_Camera_Port.currentText())
+        if self.capture is None:
+            self.capture = cv2.VideoCapture(camera_port) # argument may change with camera
+            self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)    # height of saved image   [480]
+            self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)     # width of saved image    [640]
+        self.timer.start()
+```
+
+This function displays then the video on the GUI directly. 
+
+```def displayImage(self, img, window=True):
+
+        """
+        # resize image
+        scale_percent = 80  # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        """
+
+        qformat = QtGui.QImage.Format_Indexed8
+        if len(img.shape) == 3:
+            if img.shape[2] == 4:
+                qformat = QtGui.QImage.Format_RGBA8888
+            else:
+                qformat = QtGui.QImage.Format_RGB888
+        outImage = QtGui.QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
+        outImage = outImage.rgbSwapped()
+        outImage = outImage.mirrored(1,0)
+
+        if window:
+            # Set the size of the camera widget on the UI (200x200px)
+            self.ui.imgLabel.setPixmap(QtGui.QPixmap.fromImage(outImage.scaled(200, 200)))
+            #self.ui.imgLabel.setPixmap(QtGui.QPixmap.scaled(width,height).fromImage(resized))
+```
+
+And finally this function updates the frame of the camera in the GUI. 
+
+```def update_frame(self):
+        ret, image = self.capture.read()
+        self.displayImage(image, True)
+  ```
+
+The following functions are designed to save on the computer pictures from the camera. The first one enables to take a single picture, while the second one takes several pictures according to the capture parameters selected. The third one is made to record pictures during . 
+
+```def screenshot(self):
+        flag, frame = self.capture.read()
+        path = 'screenshots'
+        if flag:
+            name = "Screenshot_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+            cv2.imwrite(os.path.join(path, name), frame)
+  ```
+  
+  ``` def capture_image(self):
+        capture_rate = self.ui.spinBox_Capture_Rate.value()
+        capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
+        dt = 1/capture_rate
+
+        dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
+        os.makedirs('recorded_images/{}'.format(dirname))
+  ```
+  
+    ``` def record_image():
+            flag, frame = self.capture.read()
+
+            path = 'recorded_images/{}'.format(dirname)
+
+            if flag:
+                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+                cv2.imwrite(os.path.join(path, name), frame)
+
+        thread1 = perpetualTimer(dt, record_image)
+        thread1.start()
+        T.sleep(capture_time)
+        thread1.cancel()
+  ```
+
+Functions related to the usage of the Fluigent equipment 
+
+
 ```python
   def updateViews1():
   	self._plt0.clear()
