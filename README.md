@@ -43,7 +43,7 @@ Requirements:
      - PyQtGraph 0.10.0 (http://www.pyqtgraph.org/).
 
 Other internal packages used:
-- multiprocessing, numpy, scipy, setuptools, io, platform, sys, enum, argparse, cvs, time, datetime, logging, progressbar, pandas etc.
+- multiprocessing, numpy, scipy, setuptools, io, platform, sys, enum, argparse, cvs, time, datetime, logging, progressbar2, pandas, opencv-python, etc.
 
 ## Installation instructions/guide:
 ### Source code
