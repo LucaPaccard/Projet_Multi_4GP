@@ -91,105 +91,24 @@ The file that has to be edited in order to add new functionnalities is the follo
      `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`  
      * Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
 * You can now edit your function. It will be launched when the button is clicked.
+
+## Usage
+Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
+1.  Launch Anaconda3 prompt or terminal
+2.  Browse to the openQCM Python software main directory:
+          `...\openQCM_Next_py_0.1.2_source\OPENQCM`
+3.  launch the python application main GUI by typing the command:
+          `python app.py`
        
 ## INSA implemented functions
 
-Functions related to the usage of the camera :
 
-The following functions enable to turn the camera on, and to start to display the video on the GUI. 
 
-This function turn the camera on. 
-
-```
-def start_camera(self):
-        # TODO : Fix error when fist port chosen isn't available
-        camera_port = int(self.ui.cBox_Camera_Port.currentText())
-        if self.capture is None:
-            self.capture = cv2.VideoCapture(camera_port) # argument may change with camera
-            self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)    # height of saved image   [480]
-            self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)     # width of saved image    [640]
-        self.timer.start()
-```
-
-This function displays then the video on the GUI directly. 
-
-```
-def displayImage(self, img, window=True):
-
-        """
-        # resize image
-        scale_percent = 80  # percent of original size
-        width = int(img.shape[1] * scale_percent / 100)
-        height = int(img.shape[0] * scale_percent / 100)
-        """
-
-        qformat = QtGui.QImage.Format_Indexed8
-        if len(img.shape) == 3:
-            if img.shape[2] == 4:
-                qformat = QtGui.QImage.Format_RGBA8888
-            else:
-                qformat = QtGui.QImage.Format_RGB888
-        outImage = QtGui.QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
-        outImage = outImage.rgbSwapped()
-        outImage = outImage.mirrored(1,0)
-
-        if window:
-            # Set the size of the camera widget on the UI (200x200px)
-            self.ui.imgLabel.setPixmap(QtGui.QPixmap.fromImage(outImage.scaled(200, 200)))
-            #self.ui.imgLabel.setPixmap(QtGui.QPixmap.scaled(width,height).fromImage(resized))
-```
-
-And finally this function updates the frame of the camera in the GUI. 
-
-```
-def update_frame(self):
-        ret, image = self.capture.read()
-        self.displayImage(image, True)
-  ```
-
-The following functions are designed to save on the computer pictures from the camera. The first one enables to take a single picture, while the second one takes several pictures according to the capture parameters selected. The third one is made to record pictures during . 
-
-```
-def screenshot(self):
-        flag, frame = self.capture.read()
-        path = 'screenshots'
-        if flag:
-            name = "Screenshot_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
-            cv2.imwrite(os.path.join(path, name), frame)
-            
-```
-  
-```
-  def capture_image(self):
-        capture_rate = self.ui.spinBox_Capture_Rate.value()
-        capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
-        dt = 1/capture_rate
-
-        dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
-        os.makedirs('recorded_images/{}'.format(dirname))
-```
-  
-``` 
-    def record_image():
-            flag, frame = self.capture.read()
-
-            path = 'recorded_images/{}'.format(dirname)
-
-            if flag:
-                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
-                cv2.imwrite(os.path.join(path, name), frame)
-
-        thread1 = perpetualTimer(dt, record_image)
-        thread1.start()
-        T.sleep(capture_time)
-        thread1.cancel()
-```
-
-Functions related to the usage of the Fluigent equipment 
+### Functions related to the usage of the injection equipment 
 
 This function allow the program to get the status of the instrument, to know if they are connected and ready to be used, it initialises the connection. 
 
-```
+```Python
 def InstrumentsInfo(self):
         print('')
         print('INSTRUMENTS INFORMATIONS:')
@@ -271,23 +190,9 @@ def InstrumentsInfo(self):
         fgt_close()
 ```
 
-This function initialises the injection and the pressure. 
-
-```
- def Injection(self):
-        global injection_time
-        y = True
-        t_end = time.time() + injection_time/1000
-        while time.time() < t_end:
-            if Stop_Injection_Bool and y:
-                fgt_set_pressure(0, 0)
-                y = False
-        fgt_set_pressure(0, 0)
-```
-
 The following functions are designed to start and stop the injection process, by setting the pressure either to the desired value during the desired time, or by setting it to 0. The start function initialises the injection. 
 
-```
+```Python
 def Start_Injection(self):
         pressure = self.ui.spinBox_Pressure.value()
         global injection_time
@@ -308,30 +213,102 @@ def Start_Injection(self):
                 fgt_set_pressure(0, 0)
                 y = False
         fgt_set_pressure(0, 0)
-        #Injection()
-        # Wait injection_time (in seconds) before setting pressure to 0
-        #time.sleep(injection_time / 1000)
 ```
 
-```
+```Python
 def Stop_Injection(self):
         global Stop_Injection_Bool
         Stop_Injection_Bool = True
         fgt_set_pressure(0,0)
 ```
-Finally, this function allows one to reset the pressure value. 
 
+### Functions related to the usage of the camera :
+
+The following functions enable to turn the camera on, and to start to display the video on the GUI. 
+
+This function turn the camera on. 
+
+```Python
+def start_camera(self):
+        camera_port = int(self.ui.cBox_Camera_Port.currentText())
+        if self.capture is None:
+            self.capture = cv2.VideoCapture(camera_port) # argument may change with camera
+            self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)    # height of saved image   [480]
+            self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)     # width of saved image    [640]
+        self.timer.start()
 ```
-def Pressure_Reset(self):
-        fgt_set_pressure(0,0)
-        fgt_close()
+
+This function displays then the video on the GUI directly. 
+
+```Python
+def displayImage(self, img, window=True):
+        qformat = QtGui.QImage.Format_Indexed8
+        if len(img.shape) == 3:
+            if img.shape[2] == 4:
+                qformat = QtGui.QImage.Format_RGBA8888
+            else:
+                qformat = QtGui.QImage.Format_RGB888
+        outImage = QtGui.QImage(img, img.shape[1], img.shape[0], img.strides[0], qformat)
+        outImage = outImage.rgbSwapped()
+        outImage = outImage.mirrored(1,0)
+
+        if window:
+            # Set the size of the camera widget on the UI (200x200px)
+            self.ui.imgLabel.setPixmap(QtGui.QPixmap.fromImage(outImage.scaled(200, 200)))
 ```
+
+And finally this function updates the frame of the camera in the GUI. 
+
+```Python
+def update_frame(self):
+        ret, image = self.capture.read()
+        self.displayImage(image, True)
+  ```
+
+The following functions are designed to save on the computer pictures from the camera. The first one enables to take a single picture, while the second one takes several pictures according to the capture parameters selected.
+
+```Python
+def screenshot(self):
+        flag, frame = self.capture.read()
+        path = 'screenshots'
+        if flag:
+            name = "Screenshot_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+            cv2.imwrite(os.path.join(path, name), frame)
+            
+```
+  
+```Python
+  def capture_image(self):
+        capture_rate = self.ui.spinBox_Capture_Rate.value()
+        capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
+        dt = 1/capture_rate
+
+        dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
+        os.makedirs('recorded_images/{}'.format(dirname))
+```
+  
+``` Python
+    def record_image():
+            flag, frame = self.capture.read()
+
+            path = 'recorded_images/{}'.format(dirname)
+
+            if flag:
+                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+                cv2.imwrite(os.path.join(path, name), frame)
+
+        thread1 = perpetualTimer(dt, record_image)
+        thread1.start()
+        T.sleep(capture_time)
+        thread1.cancel()
+```
+### Function related to the simultaneous injection and image capture process
 
 The GUI allows the operator to automate the recording of pictures during the injection process, using the functions below. 
 
 The following function sets the recording parameters according to the ones chosen by the operator.
 
-```
+```Python
 def Injection_Capture(self):
         capture_rate = self.ui.spinBox_Capture_Rate.value()
         injection_time = self.ui.spinBox_Injection_Time.value() / 1000                  # injection time
@@ -342,63 +319,30 @@ def Injection_Capture(self):
 
         dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))  # creates new directory for every recording
         os.makedirs('recorded_images/{}'.format(dirname))
-```
 
+        def record_image():
+               flag, frame = self.capture.read()
 
+               path = 'recorded_images/{}'.format(dirname)
+               if flag:
+                   name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+                   cv2.imwrite(os.path.join(path, name), frame)
 
-```
-def record_image():
-            #print("recording")
-
-            flag, frame = self.capture.read()
-
-            path = 'recorded_images/{}'.format(
-                dirname)
-            if flag:
-                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
-                cv2.imwrite(os.path.join(path, name), frame)
-```
-
-This function start the injection and the recording process'.
-
-```
         def injection():
-            #print("Hello world!")
-
-
             pressure = self.ui.spinBox_Pressure.value()
             fgt_init()
             fgt_set_pressure(0, pressure)
 
-
         thread1 = perpetualTimer(dt, record_image)
-        #thread2 = perpetualTimer(injection_time, injection)
-
-        print("go capture")
+        
         thread1.start()
         T.sleep(time_before_injection)
-        print("go injection")
-        #thread2.start()
         injection()
-
         T.sleep(injection_time)
-        #thread2.cancel()
         fgt_set_pressure(0, 0)
-        print("fini injection")
-
         T.sleep(time_after_injection)
         thread1.cancel()
-        print("fini capture")
 ```
-
-## Usage
-Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
-1.  Launch Anaconda3 prompt or terminal
-2.  Browse to the openQCM Python software main directory:
-          `...\openQCM_Next_py_0.1.2_source\OPENQCM`
-3.  launch the python application main GUI by typing the command:
-          `python app.py`
-        
 
 
 ## Links
