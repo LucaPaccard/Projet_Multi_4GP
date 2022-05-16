@@ -10,7 +10,7 @@ openQCM Next GUI Software — Injection and Camera Implementations
 Python
 
 ## Date 
-2022-01-10
+2022-05-25
 
 ## Author
 openQCM Team - Marco  
