@@ -274,27 +274,27 @@ def screenshot(self):
 ```
   
 ```Python
-    def capture_image(self):
-        capture_rate = self.ui.spinBox_Capture_Rate.value()
-        capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
-        dt = 1/capture_rate
+def capture_image(self):
+   capture_rate = self.ui.spinBox_Capture_Rate.value()
+   capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
+   dt = 1/capture_rate
 
-        dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
-        os.makedirs('recorded_images/{}'.format(dirname))
+   dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
+   os.makedirs('recorded_images/{}'.format(dirname))
 
-        def record_image():
-            flag, frame = self.capture.read()
+   def record_image():
+       flag, frame = self.capture.read()
 
-            path = 'recorded_images/{}'.format(dirname)
+       path = 'recorded_images/{}'.format(dirname)
 
-            if flag:
-                name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
-                cv2.imwrite(os.path.join(path, name), frame)
+       if flag:
+           name = "Photoluminescence_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
+           cv2.imwrite(os.path.join(path, name), frame)
 
-        thread1 = perpetualTimer(dt, record_image)
-        thread1.start()
-        T.sleep(capture_time)
-        thread1.cancel()
+   thread1 = perpetualTimer(dt, record_image)
+   thread1.start()
+   T.sleep(capture_time)
+   thread1.cancel()
 ```
 
 ### Function related to the simultaneous injection and image capture process
