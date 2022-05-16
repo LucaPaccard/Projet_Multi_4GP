@@ -101,9 +101,6 @@ Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
           `python app.py`
        
 ## INSA implemented functions
-
-
-
 ### Functions related to the usage of the injection equipment 
 
 This function allow the program to get the status of the instrument, to know if they are connected and ready to be used, it initialises the connection. 
