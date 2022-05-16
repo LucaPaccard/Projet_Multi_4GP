@@ -56,12 +56,12 @@ Windows, macOS
         conda install pyqtgraph pyserial 
 
 Linux
-  1.  Type the command below by replacing username with that of your pc change permission of Anaconda3    sudo chown -R username:username /home/username/anaconda3
+  1.  Type the command below by replacing username with that of your pc change permission of Anaconda3    `sudo chown -R username:username /home/username/anaconda3`
   2.  Open Anaconda3 terminal  and type (install/upgrade Python packages) : 
-        conda install pyqtgraph pyserial
+        `conda install pyqtgraph pyserial`
   3.  Set permission on serial port 
-        sudo usermod -a -G uucp username
-        sudo usermod -a -G dialout username
+        `sudo usermod -a -G uucp username`
+        `sudo usermod -a -G dialout username`
   4.  Logout and Login
 
 ### Qt Designer 
@@ -82,7 +82,7 @@ To link the GUI to custom functionalities, the file extension has to be change.
     This will copy the new file with the `.py` extension in the `..\openQCM\ui` directory.
 
 ### Adding new functionalities
-The file that has to be edited in order to add new functionnalities is the following:
+The file that has to be edited in order to add new functionalities is the following:
     `...\OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM\openQCM\ui\mainWindow.py`
 * The link between the GUI created on Qt Designer and `mainWindow.py` is made with the function `_configure_signals(self)`.
 * To add a function linked to a graphical element on the GUI such as a button follow this example:
