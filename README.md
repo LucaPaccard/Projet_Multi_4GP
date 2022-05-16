@@ -101,9 +101,9 @@ Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
           `python app.py`
        
 ## INSA implemented functions
-### Functions related to the usage of the injection equipment 
+### Functions related to the usage of the injection equipments
 
-This function allow the program to get the status of the instrument, to know if they are connected and ready to be used, it initialises the connection. 
+This function allow the program to get the status of the instruments, to know if they are connected and ready to be used, it initialises the connection. 
 
 ```Python
 def InstrumentsInfo(self):
@@ -221,7 +221,7 @@ def Stop_Injection(self):
 
 ### Functions related to the usage of the camera :
 
-The following functions enable to turn the camera on, and to start to display the video on the GUI. 
+The following functions enable to turn the camera on, and to start displaying the video on the GUI. 
 
 This function turn the camera on. 
 
@@ -235,7 +235,7 @@ def start_camera(self):
         self.timer.start()
 ```
 
-This function displays then the video on the GUI directly. 
+This function then displays the video on the GUI directly. 
 
 ```Python
 def displayImage(self, img, window=True):
@@ -271,21 +271,18 @@ def screenshot(self):
         if flag:
             name = "Screenshot_{}.png".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))
             cv2.imwrite(os.path.join(path, name), frame)
-            
 ```
   
 ```Python
-  def capture_image(self):
+    def capture_image(self):
         capture_rate = self.ui.spinBox_Capture_Rate.value()
         capture_time = self.ui.spinBox_Capture_Time.value()/1000  # capture time in ms on the ui but in sec in functions
         dt = 1/capture_rate
 
         dirname = "Recorded_images_{}".format(datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f"))   # creates new directory for every recording
         os.makedirs('recorded_images/{}'.format(dirname))
-```
-  
-``` Python
-    def record_image():
+
+        def record_image():
             flag, frame = self.capture.read()
 
             path = 'recorded_images/{}'.format(dirname)
@@ -299,11 +296,12 @@ def screenshot(self):
         T.sleep(capture_time)
         thread1.cancel()
 ```
+
 ### Function related to the simultaneous injection and image capture process
 
-The GUI allows the operator to automate the recording of pictures during the injection process, using the functions below. 
+The GUI allows the operator to automate the recording of pictures during the injection process, using the function below. 
 
-The following function sets the recording parameters according to the ones chosen by the operator.
+The following function sets the recording and injection parameters according to the ones chosen by the operator.
 
 ```Python
 def Injection_Capture(self):
