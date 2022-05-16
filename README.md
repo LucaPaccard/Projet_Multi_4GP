@@ -1,4 +1,4 @@
-# Projet_Multi / Paccard - Lemaire / 4A GP
+# Projet Multidisciplinaire / Paccard - Lemaire / 4A GP
 This documentation presents the Graphic User Interface (GUI) developed during the 4th year multidisciplinary project at the Physics Department of INSA Toulouse.  
 Its aim is to study quantum dots directed assembly. It combines a quartz crystal microbalance, an injection system and a camera module.  
 The collaborating laboratory of this project is the Laboratory of Physics and Chemistry of Nano-Objects (LPCNO).
