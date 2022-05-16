@@ -221,8 +221,7 @@ def Stop_Injection(self):
 
 ### Functions related to the usage of the camera :
 
-The following functions enable to turn the camera on, and to start displaying the video on the GUI. 
-
+The following functions enable to turn the camera on, and to start displaying the video on the GUI.   
 This function turn the camera on. 
 
 ```Python
@@ -299,8 +298,7 @@ def capture_image(self):
 
 ### Function related to the simultaneous injection and image capture process
 
-The GUI allows the operator to automate the recording of pictures during the injection process, using the function below. 
-
+The GUI allows the operator to automate the recording of pictures during the injection process, using the function below.  
 The following function sets the recording and injection parameters according to the ones chosen by the operator.
 
 ```Python
