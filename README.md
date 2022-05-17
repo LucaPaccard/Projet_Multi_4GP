@@ -78,7 +78,7 @@ To link the GUI to custom functionalities, the file extension has to be change.
   2. Type the command:
         `pyuic5 mainWindow_new.ui -o mainWindow_new_ui.py`
   3. In the same directory, type the command:
-        `cp mainWindow_new_ui.py ../ui/`  
+        `cp mainWindow_new_ui.py ..\ui\`  
     This will copy the new file with the `.py` extension in the `..\openQCM\ui` directory.
 
 ### Adding new functionalities
