@@ -26,7 +26,7 @@ The openQCM NEXT part exploits all the main functionalities of the openQCM NEXT 
 
 An injection module has been added with a modular pressure-based flow controller from Fluigent (https://www.fluigent.com/). The Flow EZ™ (https://www.fluigent.com/research/instruments/pressure-flow-controllers/lineup-series/flow-ez/) is the most advanced system available for pressure-based flow control. The compact device stands near the microfluidic device, allowing the user to minimize bench space use without the need of a PC. One can be operational and generate data rapidly. The Flow EZ™ supports reservoir sizes from 2 mL to one liter laboratory bottles. One can use large reservoirs and maintain continuous, pulseless flow for days without refilling.
 
-A camera modude is present to monitor in real time the processes happening in the microbalance. it is capable of taking screenshots and capturing images for a given duration and framerate.
+A camera modude is present to monitor in real time the processes happening in the microbalance. It is capable of taking screenshots and capturing images for a given duration and framerate.
 
 The application is based mainly on multiprocessing package (https://docs.python.org/3/library/multiprocessing.html).
 
