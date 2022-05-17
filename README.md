@@ -89,6 +89,7 @@ The file that has to be edited in order to add new functionalities is the follow
      * On Qt Designer, each element is given a name in the 'objectName' box in the 'Property Editor' panel. For the button used to start the injection of fluid, this button is called `pButton_Start_Injection`.
      * We will then associate a function to this button  in `_configure_signals(self)` when it is clicked:
      `self.ui.pButton_Start_Injection.clicked.connect(self.Start_Injection)`  
+     This will associate the button `pButton_Start_Injection` to the function `Start_Injection` that can be written in the class `MainWindow(QtGui.QMainWindow)`
      * Important: On Qt Designer, the text displayed on this button is 'Start Injection'. It is not the name used for the software.
 * You can now edit your function. It will be launched when the button is clicked.
 
@@ -96,7 +97,7 @@ The file that has to be edited in order to add new functionalities is the follow
 Start the application from Anaconda3 prompt (Windows) or terminal (macOS)
 1.  Launch Anaconda3 prompt or terminal
 2.  Browse to the openQCM Python software main directory:
-          `...\openQCM_Next_py_0.1.2_source\OPENQCM`
+          `...OpenQCM\openQCM_Next_py_0.1.2_source\OPENQCM`
 3.  launch the python application main GUI by typing the command:
           `python app.py`
        
