@@ -702,7 +702,6 @@ class MainWindow(QtGui.QMainWindow):
     # INSA Functions
     #########################################################################
     # Injection
-    # TODO : Emergency Stop Injection button
     def InstrumentsInfo(self):
         print('')
         print('INSTRUMENTS INFORMATIONS:')
@@ -788,10 +787,6 @@ class MainWindow(QtGui.QMainWindow):
         Stop_Injection_Bool = True
         fgt_set_pressure(0,0)
 
-    def Pressure_Reset(self):
-        fgt_set_pressure(0,0)
-        fgt_close()
-
     def Start_Injection(self):
         pressure = self.ui.spinBox_Pressure.value()
         global injection_time
@@ -812,23 +807,9 @@ class MainWindow(QtGui.QMainWindow):
                 fgt_set_pressure(0, 0)
                 y = False
         fgt_set_pressure(0, 0)
-        #Injection()
-        # Wait injection_time (in seconds) before setting pressure to 0
-        #time.sleep(injection_time / 1000)
-
-    def Injection(self):
-        global injection_time
-        y = True
-        t_end = time.time() + injection_time/1000
-        while time.time() < t_end:
-            if Stop_Injection_Bool and y:
-                fgt_set_pressure(0, 0)
-                y = False
-        fgt_set_pressure(0, 0)
 
     # Camera
     def start_camera(self):
-        # TODO : Fix error when fist port chosen isn't available
         camera_port = int(self.ui.cBox_Camera_Port.currentText())
         if self.capture is None:
             self.capture = cv2.VideoCapture(camera_port) # argument may change with camera
@@ -870,14 +851,6 @@ class MainWindow(QtGui.QMainWindow):
         thread1.cancel()
 
     def displayImage(self, img, window=True):
-
-        """
-        # resize image
-        scale_percent = 80  # percent of original size
-        width = int(img.shape[1] * scale_percent / 100)
-        height = int(img.shape[0] * scale_percent / 100)
-        """
-
         qformat = QtGui.QImage.Format_Indexed8
         if len(img.shape) == 3:
             if img.shape[2] == 4:
@@ -891,7 +864,6 @@ class MainWindow(QtGui.QMainWindow):
         if window:
             # Set the size of the camera widget on the UI (200x200px)
             self.ui.imgLabel.setPixmap(QtGui.QPixmap.fromImage(outImage.scaled(200, 200)))
-            #self.ui.imgLabel.setPixmap(QtGui.QPixmap.scaled(width,height).fromImage(resized))
 
     # Simultaneous Injection + Image Capture
     def Injection_Capture(self):
@@ -906,8 +878,6 @@ class MainWindow(QtGui.QMainWindow):
         os.makedirs('recorded_images/{}'.format(dirname))
 
         def record_image():
-            #print("recording")
-
             flag, frame = self.capture.read()
 
             path = 'recorded_images/{}'.format(
@@ -918,35 +888,25 @@ class MainWindow(QtGui.QMainWindow):
 
 
         def injection():
-            #print("Hello world!")
-
-
             pressure = self.ui.spinBox_Pressure.value()
             fgt_init()
             fgt_set_pressure(0, pressure)
 
-
         thread1 = perpetualTimer(dt, record_image)
-        #thread2 = perpetualTimer(injection_time, injection)
 
         print("go capture")
         thread1.start()
         T.sleep(time_before_injection)
         print("go injection")
-        #thread2.start()
         injection()
 
         T.sleep(injection_time)
-        #thread2.cancel()
         fgt_set_pressure(0, 0)
         print("fini injection")
 
         T.sleep(time_after_injection)
         thread1.cancel()
         print("fini capture")
-
-    #TODO : Enable injection / camera settings with buttons
-    #def _Injection_isEnabled(self, my_bool):
 
 
     # PID CONTROL FUNCTION
@@ -1339,9 +1299,6 @@ class MainWindow(QtGui.QMainWindow):
 
         # Camera + Injection
         self.ui.pButton_Injection_Capture.clicked.connect(self.Injection_Capture)
-
-        # self.ui.pButton_Switch_ON.clicked.connect(self.Switch_Valve_ON)
-        # self.ui.OFF.clicked.connect(self.Switch_Valve_OFF)
 
 
 
